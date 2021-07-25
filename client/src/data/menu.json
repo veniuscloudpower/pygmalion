@@ -1,0 +1,60 @@
+{
+  "data": [
+    {"title": "Home", "path":"/dashboard", "type":"link", "icon": "home",  "active": true},
+    {
+      "headTitle1": "Kubernetes Service",
+      "headTitle2": "Configure  and run your commands.",
+      "type": "headtitle"
+    },
+    {
+          "title": "Kubernetes", "icon": "cloud", "type": "sub",  "active": false,
+          "children": [
+            { "path": "/kubernetes/Dashboard", "title": "Service Dashboard", "type": "link" },
+            { "path": "/kubernetes/createProfile", "title": "Create profile", "type": "link" },
+            { "path": "/kubernetes/profiles", "title": "Profiles", "type": "link" }
+          ]
+    },
+    {
+      "headTitle1": "Tasks Service",
+      "headTitle2": "Task management for your project.",
+      "type": "headtitle"
+    },
+
+    {
+      "title": "Tasks", "icon": "clipboard", "type": "sub",  "active": false, "children": [
+      { "path": "/Tasks/List", "title": "Tasks", "type": "link" },
+      { "path": "/Tasks/Categories", "title": "Task Categories", "type": "link" },
+      { "path": "/Tasks/createTask", "title": "Create Task", "type": "link" }
+    ]
+    }
+  ,
+    {
+      "headTitle1": "Knowledge base",
+      "headTitle2": "Documentation about your project.",
+      "type": "headtitle"
+    },
+
+    {
+      "title": "Knowledge base", "icon": "database", "type": "sub",  "active": false, "children": [
+      { "path": "/KBase/Categories", "title": "Knowledge base", "type": "link" },
+      { "path": "/KBase/createCategory", "title": "Create category", "type": "link" },
+      { "path": "/KBase/removeCategory", "title": "Remove category", "type": "link" },
+      { "path": "/KBase/createArticle", "title": "Create article", "type": "link" }
+    ]
+    },
+    {
+      "headTitle1": "System",
+      "headTitle2": "Project management && users....",
+      "type": "headtitle"
+    },
+
+    {
+      "title": "Project management", "icon": "server", "type": "sub",  "active": false, "children": [
+      { "path": "/Projects/create", "title": "Create project", "type": "link" },
+      { "path": "/Projects/Switch", "title": "Switch to project", "type": "link" },
+      { "path": "/Projects/Remove", "title": "Remove a project", "type": "link" },
+      { "path":  "/Organization/Users","title": "Users","type": "link"}
+    ]
+    }
+  ]
+}
