@@ -250,17 +250,16 @@ public class ContactsView : BaseView
         {
             if (e.KeyEvent.Key == Key.Esc)
             {
-                e.Handled = true;
-                
                 // Check if form is dirty (has unsaved changes)
                 if (IsFormDirty())
                 {
                     // Show confirmation dialog for dirty form
                     var confirmResult = MessageBox.Query(40, 7, "Unsaved Changes", 
-                        "You have unsaved changes.\nDo you want to save?", "Save", "Discard");
+                        "You have unsaved changes.\nDo you want to save?", "Save", "Discard", "Cancel");
                     
                     if (confirmResult == 0) // Save
                     {
+                        e.Handled = true;
                         contact.Name = fieldMap["Name"].Text.ToString() ?? string.Empty;
                         contact.Email = fieldMap["Email"].Text.ToString() ?? string.Empty;
                         contact.Mobile = fieldMap["Mobile"].Text.ToString() ?? string.Empty;
@@ -278,13 +277,25 @@ public class ContactsView : BaseView
                         {
                             _contactService.UpdateContact(contact);
                         }
+                        
+                        Application.RequestStop();
+                        UpdateList();
                     }
-                    // Discard - do nothing, just close
+                    else if (confirmResult == 1) // Discard
+                    {
+                        e.Handled = true;
+                        Application.RequestStop();
+                        UpdateList();
+                    }
+                    // Cancel (confirmResult == 2) - do nothing, return to form
                 }
-                // If not dirty, just close without prompt
-                
-                Application.RequestStop();
-                UpdateList();
+                else
+                {
+                    // If not dirty, just close without prompt
+                    e.Handled = true;
+                    Application.RequestStop();
+                    UpdateList();
+                }
             }
         };
 
