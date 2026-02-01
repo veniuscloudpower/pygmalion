@@ -1,34 +1,88 @@
-using System.Text.Json.Serialization;
-
 namespace PygmalionUI.Models;
+
+/// <summary>
+/// Struct for binary serialization of contact data (Pascal record-style)
+/// Fields are readonly to prevent accidental mutation after creation.
+/// </summary>
+public readonly struct ContactRecord
+{
+    public readonly string Id;
+    public readonly string Name;
+    public readonly string Email;
+    public readonly string Mobile;
+    public readonly string Phone;
+    public readonly string Address;
+    public readonly string Notes;
+    public readonly string Website;
+    public readonly string SocialLinks;
+
+    public ContactRecord(string id, string name, string email, string mobile, string phone, 
+        string address, string notes, string website, string socialLinks)
+    {
+        Id = id ?? string.Empty;
+        Name = name ?? string.Empty;
+        Email = email ?? string.Empty;
+        Mobile = mobile ?? string.Empty;
+        Phone = phone ?? string.Empty;
+        Address = address ?? string.Empty;
+        Notes = notes ?? string.Empty;
+        Website = website ?? string.Empty;
+        SocialLinks = socialLinks ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Write this record to a BinaryWriter
+    /// </summary>
+    public void WriteTo(BinaryWriter writer)
+    {
+        writer.Write(Id);
+        writer.Write(Name);
+        writer.Write(Email);
+        writer.Write(Mobile);
+        writer.Write(Phone);
+        writer.Write(Address);
+        writer.Write(Notes);
+        writer.Write(Website);
+        writer.Write(SocialLinks);
+    }
+
+    /// <summary>
+    /// Read a record from a BinaryReader
+    /// </summary>
+    public static ContactRecord ReadFrom(BinaryReader reader)
+    {
+        return new ContactRecord(
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString()
+        );
+    }
+}
 
 public class Contact
 {
-    [JsonPropertyName("id")]
     public string Id { get; set; } = Guid.NewGuid().ToString();
     
-    [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
     
-    [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
     
-    [JsonPropertyName("mobile")]
     public string Mobile { get; set; } = string.Empty;
     
-    [JsonPropertyName("phone")]
     public string Phone { get; set; } = string.Empty;
     
-    [JsonPropertyName("address")]
     public string Address { get; set; } = string.Empty;
     
-    [JsonPropertyName("notes")]
     public string Notes { get; set; } = string.Empty;
     
-    [JsonPropertyName("website")]
     public string Website { get; set; } = string.Empty;
     
-    [JsonPropertyName("socialLinks")]
     public string SocialLinks { get; set; } = string.Empty;
 
     public string DisplayName => string.IsNullOrWhiteSpace(Name) ? "(No Name)" : Name;
@@ -41,5 +95,35 @@ public class Contact
         if (!string.IsNullOrWhiteSpace(Mobile))
             parts.Add(Mobile);
         return string.Join(" - ", parts);
+    }
+
+    /// <summary>
+    /// Convert Contact to ContactRecord struct for binary serialization
+    /// </summary>
+    public ContactRecord ToRecord()
+    {
+        return new ContactRecord(
+            Id, Name, Email, Mobile, Phone, 
+            Address, Notes, Website, SocialLinks
+        );
+    }
+
+    /// <summary>
+    /// Create Contact from ContactRecord struct
+    /// </summary>
+    public static Contact FromRecord(ContactRecord record)
+    {
+        return new Contact
+        {
+            Id = record.Id,
+            Name = record.Name,
+            Email = record.Email,
+            Mobile = record.Mobile,
+            Phone = record.Phone,
+            Address = record.Address,
+            Notes = record.Notes,
+            Website = record.Website,
+            SocialLinks = record.SocialLinks
+        };
     }
 }

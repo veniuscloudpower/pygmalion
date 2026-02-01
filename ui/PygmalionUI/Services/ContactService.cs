@@ -1,4 +1,3 @@
-using System.Text.Json;
 using PygmalionUI.Models;
 
 namespace PygmalionUI.Services;
@@ -7,12 +6,15 @@ public class ContactService
 {
     private readonly string _filePath;
     private List<Contact> _contacts;
+    
+    // Binary file header magic number to identify valid contact.dat files
+    private const int FileHeader = 0x434F4E54; // "CONT" in hex
 
     public ContactService(string? filePath = null)
     {
         _filePath = filePath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), 
-            ".pygmalion_contacts.json");
+            "contact.dat");
         _contacts = new List<Contact>();
         LoadContacts();
     }
@@ -25,9 +27,28 @@ public class ContactService
         {
             if (File.Exists(_filePath))
             {
-                var json = File.ReadAllText(_filePath);
-                var contacts = JsonSerializer.Deserialize<List<Contact>>(json);
-                _contacts = contacts ?? new List<Contact>();
+                using var stream = new FileStream(_filePath, FileMode.Open, FileAccess.Read);
+                using var reader = new BinaryReader(stream);
+                
+                // Read and verify file header
+                int header = reader.ReadInt32();
+                if (header != FileHeader)
+                {
+                    // Invalid file format - start with empty list
+                    _contacts = new List<Contact>();
+                    return;
+                }
+                
+                // Read record count
+                int count = reader.ReadInt32();
+                _contacts = new List<Contact>(count);
+                
+                // Read each contact record
+                for (int i = 0; i < count; i++)
+                {
+                    var record = ContactRecord.ReadFrom(reader);
+                    _contacts.Add(Contact.FromRecord(record));
+                }
             }
             else
             {
@@ -42,9 +63,9 @@ public class ContactService
                 SaveContacts();
             }
         }
-        catch (JsonException)
+        catch (EndOfStreamException)
         {
-            // Invalid JSON format - start with empty list
+            // Corrupted file - start with empty list
             _contacts = new List<Contact>();
         }
         catch (IOException)
@@ -58,9 +79,21 @@ public class ContactService
     {
         try
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            var json = JsonSerializer.Serialize(_contacts, options);
-            File.WriteAllText(_filePath, json);
+            using var stream = new FileStream(_filePath, FileMode.Create, FileAccess.Write);
+            using var writer = new BinaryWriter(stream);
+            
+            // Write file header
+            writer.Write(FileHeader);
+            
+            // Write record count
+            writer.Write(_contacts.Count);
+            
+            // Write each contact record
+            foreach (var contact in _contacts)
+            {
+                var record = contact.ToRecord();
+                record.WriteTo(writer);
+            }
         }
         catch (UnauthorizedAccessException)
         {

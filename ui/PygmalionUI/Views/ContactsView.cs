@@ -146,6 +146,19 @@ public class ContactsView : BaseView
             HotFocus = Application.Driver.MakeAttribute(Color.White, Color.Blue)
         };
 
+        // Store original values to detect dirty state
+        var originalValues = new Dictionary<string, string>
+        {
+            { "Name", contact.Name },
+            { "Email", contact.Email },
+            { "Mobile", contact.Mobile },
+            { "Phone", contact.Phone },
+            { "Address", contact.Address },
+            { "Website", contact.Website },
+            { "SocialLinks", contact.SocialLinks },
+            { "Notes", contact.Notes }
+        };
+
         // Dictionary to map field names to TextFields for maintainability
         var fieldMap = new Dictionary<string, TextField>();
         var fieldOrder = new List<string>();
@@ -211,44 +224,64 @@ public class ContactsView : BaseView
         yPos++;
         AddFieldRow("Notes", "Notes:", contact.Notes, yPos++);
 
-        var instructionLabel = new Label("Enter=Next Field | ESC=Save & Close")
+        var instructionLabel = new Label("Enter=Next Field | ESC=Close")
         {
             X = Pos.Center(),
             Y = yPos + 2
         };
         dialog.Add(instructionLabel);
 
-        // Handle ESC to save with confirmation (no buttons)
+        // Helper function to check if form is dirty
+        bool IsFormDirty()
+        {
+            foreach (var field in fieldMap)
+            {
+                var currentValue = field.Value.Text.ToString() ?? string.Empty;
+                if (currentValue != originalValues[field.Key])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Handle ESC with dirty check
         dialog.KeyPress += (e) =>
         {
             if (e.KeyEvent.Key == Key.Esc)
             {
                 e.Handled = true;
                 
-                // Show confirmation dialog
-                var confirmResult = MessageBox.Query(40, 7, "Save Contact", 
-                    "Do you want to save the contact?", "Save", "Discard");
-                
-                if (confirmResult == 0) // Save
+                // Check if form is dirty (has unsaved changes)
+                if (IsFormDirty())
                 {
-                    contact.Name = fieldMap["Name"].Text.ToString() ?? string.Empty;
-                    contact.Email = fieldMap["Email"].Text.ToString() ?? string.Empty;
-                    contact.Mobile = fieldMap["Mobile"].Text.ToString() ?? string.Empty;
-                    contact.Phone = fieldMap["Phone"].Text.ToString() ?? string.Empty;
-                    contact.Address = fieldMap["Address"].Text.ToString() ?? string.Empty;
-                    contact.Website = fieldMap["Website"].Text.ToString() ?? string.Empty;
-                    contact.SocialLinks = fieldMap["SocialLinks"].Text.ToString() ?? string.Empty;
-                    contact.Notes = fieldMap["Notes"].Text.ToString() ?? string.Empty;
+                    // Show confirmation dialog for dirty form
+                    var confirmResult = MessageBox.Query(40, 7, "Unsaved Changes", 
+                        "You have unsaved changes.\nDo you want to save?", "Save", "Discard");
+                    
+                    if (confirmResult == 0) // Save
+                    {
+                        contact.Name = fieldMap["Name"].Text.ToString() ?? string.Empty;
+                        contact.Email = fieldMap["Email"].Text.ToString() ?? string.Empty;
+                        contact.Mobile = fieldMap["Mobile"].Text.ToString() ?? string.Empty;
+                        contact.Phone = fieldMap["Phone"].Text.ToString() ?? string.Empty;
+                        contact.Address = fieldMap["Address"].Text.ToString() ?? string.Empty;
+                        contact.Website = fieldMap["Website"].Text.ToString() ?? string.Empty;
+                        contact.SocialLinks = fieldMap["SocialLinks"].Text.ToString() ?? string.Empty;
+                        contact.Notes = fieldMap["Notes"].Text.ToString() ?? string.Empty;
 
-                    if (isNew)
-                    {
-                        _contactService.AddContact(contact);
+                        if (isNew)
+                        {
+                            _contactService.AddContact(contact);
+                        }
+                        else
+                        {
+                            _contactService.UpdateContact(contact);
+                        }
                     }
-                    else
-                    {
-                        _contactService.UpdateContact(contact);
-                    }
+                    // Discard - do nothing, just close
                 }
+                // If not dirty, just close without prompt
                 
                 Application.RequestStop();
                 UpdateList();
