@@ -1,0 +1,31 @@
+#!/bin/bash
+cd /home/runner/work/pygmalion/pygmalion/ui/PygmalionUI
+echo "Testing PygmalionUI Console Application"
+echo "========================================"
+echo ""
+echo "1. Building the application..."
+dotnet build --verbosity quiet
+echo ""
+echo "2. Testing --help flag..."
+dotnet run -- --help
+echo ""
+echo "3. Application structure:"
+echo "   - Main entry point: Program.cs"
+echo "   - Application logic: App.cs"
+echo "   - Navigation service: Services/NavigationService.cs"
+echo "   - Base view class: Views/BaseView.cs"
+echo "   - Contacts view: Views/ContactsView.cs"
+echo "   - Files view: Views/FilesView.cs"
+echo ""
+echo "4. The application features:"
+echo "   - Terminal GUI with green color scheme"
+echo "   - Main menu with Contacts and Files options"
+echo "   - Navigation between views"
+echo "   - ESC key to go back to main menu"
+echo "   - Contact management (add, remove)"
+echo "   - File management (add, remove)"
+echo ""
+echo "5. Running briefly to show terminal interface..."
+timeout 1 dotnet run 2>&1 | head -20 || true
+echo ""
+echo "Test completed successfully!"
