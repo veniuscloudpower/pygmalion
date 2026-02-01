@@ -1,0 +1,109 @@
+===================================================================================
+                    PYGMALION UI - DEMONSTRATION OUTPUT
+===================================================================================
+
+1. APPLICATION STARTUP
+   -------------------
+   When you run 'dotnet run', the application displays:
+
+   ┌ Pygmalion UI - Terminal Dashboard ────────────────────────────────────┐
+   │                                                                        │
+   │                                                                        │
+   │                                                                        │
+   │                      ┌ Main Menu ────────────────────┐                │
+   │                      │     Contacts ->               │                │
+   │                      │     Files ->                  │                │
+   │                      │                               │                │
+   │                      │     Exit ->                   │                │
+   │                      └───────────────────────────────┘                │
+   │                                                                        │
+   │                                                                        │
+   └────────────────────────────────────────────────────────────────────────┘
+
+
+2. CONTACTS VIEW
+   -------------
+   When you select "Contacts ->":
+
+   ┌ Contacts ─────────────────────────────────────────────────────────────┐
+   │ Contact List (Press ESC to return to main menu)                       │
+   │                                                                        │
+   │  John Doe - john.doe@example.com                                      │
+   │  Jane Smith - jane.smith@example.com                                  │
+   │  Bob Johnson - bob.johnson@example.com                                │
+   │  Alice Williams - alice.williams@example.com                          │
+   │                                                                        │
+   │                                                                        │
+   │  [ Add Contact ]  [ Remove Selected ]  [ Back ]                       │
+   └────────────────────────────────────────────────────────────────────────┘
+
+
+3. ADD CONTACT DIALOG
+   ------------------
+   When you click "Add Contact":
+
+                      ┌ Add New Contact ─────────┐
+                      │ Name:  [____________]     │
+                      │                           │
+                      │ Email: [____________]     │
+                      │                           │
+                      │   [ OK ]  [ Cancel ]      │
+                      └───────────────────────────┘
+
+
+4. FILES VIEW
+   ----------
+   When you select "Files ->":
+
+   ┌ Files ────────────────────────────────────────────────────────────────┐
+   │ File List (Press ESC to return to main menu)                          │
+   │                                                                        │
+   │  document1.txt                                                        │
+   │  presentation.pptx                                                    │
+   │  spreadsheet.xlsx                                                     │
+   │  image.png                                                            │
+   │  notes.md                                                             │
+   │                                                                        │
+   │                                                                        │
+   │  [ Add File ]  [ Remove Selected ]  [ Back ]                          │
+   └────────────────────────────────────────────────────────────────────────┘
+
+
+5. ADD FILE DIALOG
+   ---------------
+   When you click "Add File":
+
+                      ┌ Add New File ────────────┐
+                      │ File Name: [__________]   │
+                      │                           │
+                      │   [ OK ]  [ Cancel ]      │
+                      └───────────────────────────┘
+
+
+NAVIGATION:
+-----------
+• Use ARROW KEYS to navigate between menu items
+• Press ENTER to select an item
+• Press ESC to return to the main menu from any view
+• Click with MOUSE to select items (if supported by terminal)
+
+COLOR SCHEME:
+-------------
+• Green background matching catapeltUI style
+• White text on green for normal items
+• Black text on bright green for focused items
+• Professional terminal appearance
+
+FEATURES:
+---------
+✓ Full keyboard navigation
+✓ Mouse support
+✓ Dialog boxes for data entry
+✓ List views for displaying data
+✓ Add/Remove functionality
+✓ ESC key navigation
+✓ Clean, professional UI
+
+===================================================================================
+                              END OF DEMONSTRATION
+===================================================================================
