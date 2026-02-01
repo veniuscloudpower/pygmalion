@@ -2,46 +2,48 @@ namespace PygmalionUI.Models;
 
 /// <summary>
 /// Struct for binary serialization of contact data (Pascal record-style)
+/// Fields are readonly to prevent accidental mutation after creation.
 /// </summary>
-public struct ContactRecord
+public readonly struct ContactRecord
 {
-    public string Id;
-    public string Name;
-    public string Email;
-    public string Mobile;
-    public string Phone;
-    public string Address;
-    public string Notes;
-    public string Website;
-    public string SocialLinks;
+    public readonly string Id;
+    public readonly string Name;
+    public readonly string Email;
+    public readonly string Mobile;
+    public readonly string Phone;
+    public readonly string Address;
+    public readonly string Notes;
+    public readonly string Website;
+    public readonly string SocialLinks;
 
-    public ContactRecord()
+    public ContactRecord(string id, string name, string email, string mobile, string phone, 
+        string address, string notes, string website, string socialLinks)
     {
-        Id = Guid.NewGuid().ToString();
-        Name = string.Empty;
-        Email = string.Empty;
-        Mobile = string.Empty;
-        Phone = string.Empty;
-        Address = string.Empty;
-        Notes = string.Empty;
-        Website = string.Empty;
-        SocialLinks = string.Empty;
+        Id = id ?? string.Empty;
+        Name = name ?? string.Empty;
+        Email = email ?? string.Empty;
+        Mobile = mobile ?? string.Empty;
+        Phone = phone ?? string.Empty;
+        Address = address ?? string.Empty;
+        Notes = notes ?? string.Empty;
+        Website = website ?? string.Empty;
+        SocialLinks = socialLinks ?? string.Empty;
     }
 
     /// <summary>
     /// Write this record to a BinaryWriter
     /// </summary>
-    public readonly void WriteTo(BinaryWriter writer)
+    public void WriteTo(BinaryWriter writer)
     {
-        writer.Write(Id ?? string.Empty);
-        writer.Write(Name ?? string.Empty);
-        writer.Write(Email ?? string.Empty);
-        writer.Write(Mobile ?? string.Empty);
-        writer.Write(Phone ?? string.Empty);
-        writer.Write(Address ?? string.Empty);
-        writer.Write(Notes ?? string.Empty);
-        writer.Write(Website ?? string.Empty);
-        writer.Write(SocialLinks ?? string.Empty);
+        writer.Write(Id);
+        writer.Write(Name);
+        writer.Write(Email);
+        writer.Write(Mobile);
+        writer.Write(Phone);
+        writer.Write(Address);
+        writer.Write(Notes);
+        writer.Write(Website);
+        writer.Write(SocialLinks);
     }
 
     /// <summary>
@@ -49,18 +51,17 @@ public struct ContactRecord
     /// </summary>
     public static ContactRecord ReadFrom(BinaryReader reader)
     {
-        return new ContactRecord
-        {
-            Id = reader.ReadString(),
-            Name = reader.ReadString(),
-            Email = reader.ReadString(),
-            Mobile = reader.ReadString(),
-            Phone = reader.ReadString(),
-            Address = reader.ReadString(),
-            Notes = reader.ReadString(),
-            Website = reader.ReadString(),
-            SocialLinks = reader.ReadString()
-        };
+        return new ContactRecord(
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString(),
+            reader.ReadString()
+        );
     }
 }
 
@@ -101,18 +102,10 @@ public class Contact
     /// </summary>
     public ContactRecord ToRecord()
     {
-        return new ContactRecord
-        {
-            Id = Id,
-            Name = Name,
-            Email = Email,
-            Mobile = Mobile,
-            Phone = Phone,
-            Address = Address,
-            Notes = Notes,
-            Website = Website,
-            SocialLinks = SocialLinks
-        };
+        return new ContactRecord(
+            Id, Name, Email, Mobile, Phone, 
+            Address, Notes, Website, SocialLinks
+        );
     }
 
     /// <summary>
