@@ -1,0 +1,58 @@
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║                    PYGMALION UI - TERMINAL DASHBOARD                            ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                          ╔═ Main Menu ═══════════════╗                          ║
+║                          ║      Contacts ->          ║                          ║
+║                          ║      Files ->             ║                          ║
+║                          ║                           ║                          ║
+║                          ║      Exit ->              ║                          ║
+║                          ╚═══════════════════════════╝                          ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║  Built with Terminal.Gui 1.19.0 and .NET 10.0                                   ║
+║  Menu: Use arrow keys to navigate, Enter to select, ESC to go back             ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+
+
+CONTACTS VIEW:
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║ Contacts                                                                         ║
+║──────────────────────────────────────────────────────────────────────────────────║
+║ Contact List (Press ESC to return to main menu)                                 ║
+║                                                                                  ║
+║  • John Doe - john.doe@example.com                                              ║
+║  • Jane Smith - jane.smith@example.com                                          ║
+║  • Bob Johnson - bob.johnson@example.com                                        ║
+║  • Alice Williams - alice.williams@example.com                                  ║
+║                                                                                  ║
+║                                                                                  ║
+║  [Add Contact]  [Remove Selected]  [Back]                                       ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+
+
+FILES VIEW:
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║ Files                                                                            ║
+║──────────────────────────────────────────────────────────────────────────────────║
+║ File List (Press ESC to return to main menu)                                    ║
+║                                                                                  ║
+║  • document1.txt                                                                ║
+║  • presentation.pptx                                                            ║
+║  • spreadsheet.xlsx                                                             ║
+║  • image.png                                                                    ║
+║  • notes.md                                                                     ║
+║                                                                                  ║
+║                                                                                  ║
+║  [Add File]  [Remove Selected]  [Back]                                          ║
+╚══════════════════════════════════════════════════════════════════════════════════╝

@@ -1,0 +1,37 @@
+# Demo Script for Pygmalion UI
+
+## Main Menu Display
+The application shows a centered green menu with:
+- Contacts ->
+- Files ->
+- Exit ->
+
+## Navigation
+- Use arrow keys to navigate between menu items
+- Press Enter to select an item
+- Press ESC to go back to the main menu
+
+## Contacts View
+Shows a list of sample contacts:
+- John Doe - john.doe@example.com
+- Jane Smith - jane.smith@example.com
+- Bob Johnson - bob.johnson@example.com
+- Alice Williams - alice.williams@example.com
+
+With buttons:
+- Add Contact (opens dialog with Name and Email fields)
+- Remove Selected
+- Back
+
+## Files View
+Shows a list of sample files:
+- document1.txt
+- presentation.pptx
+- spreadsheet.xlsx
+- image.png
+- notes.md
+
+With buttons:
+- Add File (opens dialog with File Name field)
+- Remove Selected
+- Back
