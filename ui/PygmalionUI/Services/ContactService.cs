@@ -42,8 +42,14 @@ public class ContactService
                 SaveContacts();
             }
         }
-        catch
+        catch (JsonException)
         {
+            // Invalid JSON format - start with empty list
+            _contacts = new List<Contact>();
+        }
+        catch (IOException)
+        {
+            // File system error - start with empty list
             _contacts = new List<Contact>();
         }
     }
@@ -56,9 +62,13 @@ public class ContactService
             var json = JsonSerializer.Serialize(_contacts, options);
             File.WriteAllText(_filePath, json);
         }
-        catch
+        catch (UnauthorizedAccessException)
         {
-            // Silently fail - in a real app, this would be logged
+            // Permission denied - silently fail
+        }
+        catch (IOException)
+        {
+            // File system error - silently fail
         }
     }
 

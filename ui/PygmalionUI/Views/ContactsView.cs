@@ -146,13 +146,15 @@ public class ContactsView : BaseView
             HotFocus = Application.Driver.MakeAttribute(Color.White, Color.Blue)
         };
 
-        var fields = new List<TextField>();
+        // Dictionary to map field names to TextFields for maintainability
+        var fieldMap = new Dictionary<string, TextField>();
+        var fieldOrder = new List<string>();
         int labelWidth = 12;
         int fieldWidth = 50;
         int yPos = 1;
 
         // Helper to create a field row
-        void AddFieldRow(string labelText, string value, int y)
+        void AddFieldRow(string fieldName, string labelText, string value, int y)
         {
             var lbl = new Label(labelText)
             {
@@ -169,44 +171,45 @@ public class ContactsView : BaseView
                 ColorScheme = normalScheme
             };
             
-            // Handle Enter key as Tab and setup focus change handling
+            // Handle Enter key as Tab
             field.KeyPress += (e) =>
             {
                 if (e.KeyEvent.Key == Key.Enter)
                 {
                     // Move to next field
-                    var currentIndex = fields.IndexOf(field);
-                    if (currentIndex >= 0 && currentIndex < fields.Count - 1)
+                    var currentIndex = fieldOrder.IndexOf(fieldName);
+                    if (currentIndex >= 0 && currentIndex < fieldOrder.Count - 1)
                     {
-                        fields[currentIndex + 1].SetFocus();
+                        fieldMap[fieldOrder[currentIndex + 1]].SetFocus();
                     }
-                    else if (currentIndex == fields.Count - 1)
+                    else if (currentIndex == fieldOrder.Count - 1)
                     {
-                        fields[0].SetFocus();
+                        fieldMap[fieldOrder[0]].SetFocus();
                     }
                     e.Handled = true;
                 }
             };
             
-            fields.Add(field);
+            fieldMap[fieldName] = field;
+            fieldOrder.Add(fieldName);
             dialog.Add(field);
         }
 
-        AddFieldRow("Name:", contact.Name, yPos++);
+        AddFieldRow("Name", "Name:", contact.Name, yPos++);
         yPos++;
-        AddFieldRow("Email:", contact.Email, yPos++);
+        AddFieldRow("Email", "Email:", contact.Email, yPos++);
         yPos++;
-        AddFieldRow("Mobile:", contact.Mobile, yPos++);
+        AddFieldRow("Mobile", "Mobile:", contact.Mobile, yPos++);
         yPos++;
-        AddFieldRow("Phone:", contact.Phone, yPos++);
+        AddFieldRow("Phone", "Phone:", contact.Phone, yPos++);
         yPos++;
-        AddFieldRow("Address:", contact.Address, yPos++);
+        AddFieldRow("Address", "Address:", contact.Address, yPos++);
         yPos++;
-        AddFieldRow("Website:", contact.Website, yPos++);
+        AddFieldRow("Website", "Website:", contact.Website, yPos++);
         yPos++;
-        AddFieldRow("Social:", contact.SocialLinks, yPos++);
+        AddFieldRow("SocialLinks", "Social:", contact.SocialLinks, yPos++);
         yPos++;
-        AddFieldRow("Notes:", contact.Notes, yPos++);
+        AddFieldRow("Notes", "Notes:", contact.Notes, yPos++);
 
         var instructionLabel = new Label("Enter=Next Field | ESC=Save & Close")
         {
@@ -228,14 +231,14 @@ public class ContactsView : BaseView
                 
                 if (confirmResult == 0) // Save
                 {
-                    contact.Name = fields[0].Text.ToString() ?? string.Empty;
-                    contact.Email = fields[1].Text.ToString() ?? string.Empty;
-                    contact.Mobile = fields[2].Text.ToString() ?? string.Empty;
-                    contact.Phone = fields[3].Text.ToString() ?? string.Empty;
-                    contact.Address = fields[4].Text.ToString() ?? string.Empty;
-                    contact.Website = fields[5].Text.ToString() ?? string.Empty;
-                    contact.SocialLinks = fields[6].Text.ToString() ?? string.Empty;
-                    contact.Notes = fields[7].Text.ToString() ?? string.Empty;
+                    contact.Name = fieldMap["Name"].Text.ToString() ?? string.Empty;
+                    contact.Email = fieldMap["Email"].Text.ToString() ?? string.Empty;
+                    contact.Mobile = fieldMap["Mobile"].Text.ToString() ?? string.Empty;
+                    contact.Phone = fieldMap["Phone"].Text.ToString() ?? string.Empty;
+                    contact.Address = fieldMap["Address"].Text.ToString() ?? string.Empty;
+                    contact.Website = fieldMap["Website"].Text.ToString() ?? string.Empty;
+                    contact.SocialLinks = fieldMap["SocialLinks"].Text.ToString() ?? string.Empty;
+                    contact.Notes = fieldMap["Notes"].Text.ToString() ?? string.Empty;
 
                     if (isNew)
                     {
@@ -253,9 +256,9 @@ public class ContactsView : BaseView
         };
 
         // Set focus to first field
-        if (fields.Count > 0)
+        if (fieldOrder.Count > 0)
         {
-            fields[0].SetFocus();
+            fieldMap[fieldOrder[0]].SetFocus();
         }
 
         Application.Run(dialog);
