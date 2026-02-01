@@ -12,7 +12,7 @@ public class ContactService
     {
         _filePath = filePath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), 
-            ".pygmalion_contacts.json");
+            "contact.dat");
         _contacts = new List<Contact>();
         LoadContacts();
     }
